@@ -6,7 +6,7 @@
 
 
 //TODO: interrupt for LEDtoggle
-//TODO: interrupt for ADC
+//TODO: interrupt for Joystick?
 //question: do interrupts only work on 1->0 transition??
 
 void joystickDisplay(void* arg){
@@ -39,6 +39,7 @@ void joystickDisplay(void* arg){
 
 void printADC(void* arg){
 	// read ADC vals and output
+	//osDelay instead of interrupt?
 	while(1){
 		float adc_val = readADC();
 		printf("ADC val: %.2f\n", adc_val);
@@ -83,10 +84,11 @@ void toggleLED(void* arg){
 }
 #endif
 #if ISR == 1
-void toggleLED(void* arg){
+void toggleLED(void* arg)
 	static bool button_was_pressed = false;
 	while(1){
 		// wait for button press and button release
+		//osEventFlagsWait (use any) flags for button down and button up
 		// on release toggle LED 7 state
 		bool button_state = (LPC_GPIO2->FIOPIN >> 10) & 0x1;
 		if( !button_state ){
