@@ -2,12 +2,7 @@
 #include <cmsis_os2.h>
 #include <LPC17xx.h>
 #include "periphutils.h"
-#define ISR 0
 
-
-//TODO: interrupt for LEDtoggle
-//TODO: interrupt for Joystick?
-//question: do interrupts only work on 1->0 transition??
 
 void joystickDisplay(void* arg){
 	// read joystick direction
@@ -47,7 +42,7 @@ void printADC(void* arg){
 	}
 }
 
-#if ISR == 0
+
 void toggleLED(void* arg){
 	static bool button_was_pressed = false;
 	while(1){
@@ -82,29 +77,6 @@ void toggleLED(void* arg){
 	
 
 }
-#endif
-#if ISR == 1
-void toggleLED(void* arg)
-	static bool button_was_pressed = false;
-	while(1){
-		// wait for button press and button release
-		//osEventFlagsWait (use any) flags for button down and button up
-		// on release toggle LED 7 state
-		bool button_state = (LPC_GPIO2->FIOPIN >> 10) & 0x1;
-		if( !button_state ){
-			button_was_pressed = true;
-			osThreadYield();
-		}else if( button_was_pressed ){
-			//bool led_state = (LPC_GPIO2->FIOPIN >> 6) & 0x1;
-			//writeLED(7, !led_state);
-			//toggle LED 7
-			LPC_GPIO2->FIOPIN ^= (1 << 6);
-			button_was_pressed = false;
-			osThreadYield();
-		}
-	}
-}
-#endif
 
 int main(void){
 	/*osKernelInitialize();
