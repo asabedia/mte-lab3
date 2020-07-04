@@ -61,7 +61,7 @@ void writeLED(uint8_t led_num, bool bit_value){
 }
 
 void setLEDs(uint8_t* arr){
-	for(int i=0; i < 8; i++) writeLED(i, arr[i]);
+	for(int i=0; i < 8; i++) if(arr[i] ==0 || arr[i] == 1){ writeLED( i, arr[i]); };
 }
 
 void set_all_LED(bool bit_value){
